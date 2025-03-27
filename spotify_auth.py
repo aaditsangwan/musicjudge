@@ -10,15 +10,13 @@ client_id = os.getenv("CLIENT_ID")
 client_secret = os.getenv("CLIENT_SECRET")
 redirect_uri = "http://localhost:8888/callback"
 
-def get_auth_url():
-    scope = "user-read-private user-read-email"
+def get_auth_url(scope):
     auth_url = "https://accounts.spotify.com/authorize"
     auth_url += "?client_id=" + client_id
     auth_url += "&response_type=code"
     auth_url += "&redirect_uri=" + redirect_uri
     auth_url += "&scope=" + scope
     return auth_url
-
 
 def get_token_with_auth_code(code):
     auth_string = client_id + ":" + client_secret
@@ -39,8 +37,7 @@ def get_token_with_auth_code(code):
     
     result = post(url, headers=headers, data=data)
     json_result = json.loads(result.content)
-    
-    return json_result  # Return the entire response
+    return json_result
 
 def refresh_access_token(refresh_token):
     """Get a new access token using the refresh token"""
@@ -53,6 +50,7 @@ def refresh_access_token(refresh_token):
         "Authorization": "Basic " + auth_base64,
         "Content-Type": "application/x-www-form-urlencoded"
     }
+    
     data = {
         "grant_type": "refresh_token",
         "refresh_token": refresh_token

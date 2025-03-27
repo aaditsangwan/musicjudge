@@ -1,54 +1,39 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>Your Top Artists</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='style.css') }}"
-    />
-  </head>
-  <body>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
     <div class="container">
-      <h1>Your Top Artists</h1>
-
-      <div class="time-range">
-        <a
-          href="/top-artists?time_range=short_term"
-          class="{% if time_range == 'short_term' %}active{% endif %}"
-          >Last 4 Weeks</a
-        >
-        <a
-          href="/top-artists?time_range=medium_term"
-          class="{% if time_range == 'medium_term' %}active{% endif %}"
-          >Last 6 Months</a
-        >
-        <a
-          href="/top-artists?time_range=long_term"
-          class="{% if time_range == 'long_term' %}active{% endif %}"
-          >All Time</a
-        >
-      </div>
-
-      <ul class="artists-list">
-        {% for artist in artists %}
-        <li>
-          <span class="rank">{{ loop.index }}</span>
-          {% if artist.images and artist.images|length > 0 %}
-          <img src="{{ artist.images[-1].url }}" alt="Artist Image" />
-          {% endif %}
-          <div class="artist-info">
-            <h3>{{ artist.name }}</h3>
-            <p>
-              Genres: {{ artist.genres|join(', ') if artist.genres else 'None'
-              }}
-            </p>
-            <p>Popularity: {{ artist.popularity }}/100</p>
-          </div>
-        </li>
-        {% endfor %}
-      </ul>
-
-      <a href="/profile" class="btn back-btn">Back to Profile</a>
+        <h1>Your Top Artists</h1>
+        
+        <div class="time-range">
+            <a href="/top-artists?time_range=short_term" {% if time_range == 'short_term' %}class="active"{% endif %}>Last 4 Weeks</a>
+            <a href="/top-artists?time_range=medium_term" {% if time_range == 'medium_term' %}class="active"{% endif %}>Last 6 Months</a>
+            <a href="/top-artists?time_range=long_term" {% if time_range == 'long_term' %}class="active"{% endif %}>All Time</a>
+        </div>
+        
+        <ul class="artists-list">
+            {% for artist in artists %}
+            <li>
+                <span class="rank">{{ loop.index }}</span>
+                {% if artist.images and artist.images|length > 0 %}
+                <img src="{{ artist.images[2].url }}" alt="{{ artist.name }}">
+                {% endif %}
+                <div class="artist-info">
+                    <h3>{{ artist.name }}</h3>
+                    <p><strong>Genres:</strong> {{ artist.genres|join(', ') if artist.genres else 'None' }}</p>
+                    <p><strong>Popularity:</strong> {{ artist.popularity }}/100</p>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        
+        <div class="navigation">
+            <a href="/profile" class="btn">Back to Profile</a>
+            <a href="/chandler-judgment?time_range={{ time_range }}" class="btn">Get Chandler's Judgment</a>
+        </div>
     </div>
-  </body>
+</body>
 </html>
